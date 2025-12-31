@@ -39,10 +39,10 @@ exception Tag_not_found of string
 (**  {2 Reading XML values } *)
 
 (** Read an XML document from an [in_channel] *)
-val from_channel : in_channel -> Xmlm.dtd * nodes
+val from_channel : in_channel -> Xmlm.dtd * node
 
 (** Read an XML document directly from a [string] *)
-val from_string : string -> Xmlm.dtd * nodes
+val from_string : string -> Xmlm.dtd * node
 
 (** Low-level function to read directly from an [Xmlm] input source *)
 val from_input : Xmlm.input -> Xmlm.dtd * node
@@ -50,18 +50,18 @@ val from_input : Xmlm.input -> Xmlm.dtd * node
 (** {2 Writing XML values } *)
 
 (** Write an XML document to an [out_channel] *)
-val to_channel : out_channel -> ?decl:bool -> Xmlm.dtd -> nodes -> unit
+val to_channel : out_channel -> ?decl:bool -> Xmlm.dtd -> node -> unit
 
 (** Write an XML document to a [string].  This goes via an intermediate
     [Buffer] and so may be slow on large documents. *)
-val to_string : ?decl:bool -> ?dtd:string -> nodes -> string
+val to_string : ?decl:bool -> ?dtd:string -> node -> string
 
 (** Low-level function to write directly to an [Xmlm] output source *)
 val to_output : Xmlm.output -> Xmlm.dtd * node -> unit
 
 (** [pp fmt x] will write a string representation of the XML document [x]
     to the formatter [fmt]. *)
-val pp : Format.formatter -> nodes -> unit [@@ocaml.toplevel_printer]
+val pp : Format.formatter -> node -> unit [@@ocaml.toplevel_printer]
 
 (** {2 Attribute handling} *)
 

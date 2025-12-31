@@ -30,12 +30,12 @@ let from_input i =
 let from_channel chan =
   let i = Xmlm.make_input (`Channel chan) in
   let (dtd,doc) = from_input i in
-  (dtd, [doc])
+  (dtd, doc)
 
 let from_string buf =
   let i = Xmlm.make_input (`String (0,buf)) in
   let (dtd,doc) = from_input i in
-  (dtd, [doc])
+  (dtd, doc)
   
 let to_output o t = 
   let frag = function
@@ -43,13 +43,10 @@ let to_output o t =
   | `Data d -> `Data d in
   Xmlm.output_doc_tree frag o t
 
-let write_document mode ?(decl=false) dtd doc =
-  let o = Xmlm.make_output ~decl mode in
-  match doc with
-  | [] -> ()
-  | hd::tl ->
-     to_output o (dtd, hd);
-     List.iter (fun t -> to_output o (None, t)) tl
+
+let write_document mode ?(decl=false) ?(ns_prefix=(fun _-> Some "")) dtd doc =
+  let o = Xmlm.make_output ~decl ~ns_prefix mode in
+  to_output o (dtd, doc)
 
 let to_channel chan ?(decl=false) dtd doc =
   write_document (`Channel chan) ~decl dtd doc
